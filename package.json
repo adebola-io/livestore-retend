@@ -1,0 +1,28 @@
+{
+  "name": "livestore-retend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5229",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@livestore/adapter-web": "^0.3.1",
+    "@livestore/devtools-vite": "^0.3.1",
+    "@livestore/livestore": "^0.3.1",
+    "@livestore/peer-deps": "^0.3.1",
+    "@livestore/sync-cf": "^0.3.1",
+    "@livestore/wa-sqlite": "1.0.5-dev.2",
+    "retend": "https://pkg.pr.new/resuite/retend@77be303"
+  },
+  "devDependencies": {
+    "vite": "^6.2.1",
+    "typescript": "^5.5.2",
+    "@types/node": "latest"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher"
+  ]
+}
