@@ -42,18 +42,18 @@ export async function Todos() {
   return (
     <div class={classes.content}>
       <h1 class={classes.heading}>Todos</h1>
-      <form onSubmit--prevent={handleSubmit}>
-        <input
-          name="taskName"
-          type="text"
-          placeholder="What needs to be done?"
-          class={classes.button}
-          required
-        />
-        <button type="submit" class={classes.button}>
-          Add Todo
-        </button>
-      </form>
+       <form class={classes.form} onSubmit--prevent={handleSubmit}>
+         <input
+           name="taskName"
+           type="text"
+           placeholder="What needs to be done?"
+           class={classes.input}
+           required
+         />
+         <button type="submit" class={classes.button}>
+           Add Todo
+         </button>
+       </form>
       <button
         type="button"
         class={classes.button}
@@ -96,13 +96,13 @@ function TodoItem(props: TodoItemProps) {
       >
         {item.text}
       </span>
-      <button
-        type="button"
-        class={classes.button}
-        onClick={() => handleDelete(item)}
-      >
-        Delete
-      </button>
+       <button
+         type="button"
+         class={classes.deleteButton}
+         onClick={() => handleDelete(item)}
+       >
+         Delete
+       </button>
     </li>
   );
 }

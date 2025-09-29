@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(60deg, #d2cdf4, #e2f6cf, white);
+  background-color: #f9f9f9;
 }
 
 .content {
@@ -35,13 +35,38 @@
   text-decoration: inherit;
 }
 
+.form {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 8px;
+}
+
+.input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #646cff;
+}
+
 .button {
   font: inherit;
-  background-color: white;
-  border-radius: 7px;
-  padding: 10px 15px;
-  border: 2px solid gray;
-  margin: 4px;
+  background-color: #646cff;
+  color: white;
+  border-radius: 4px;
+  padding: 12px 16px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #535bf2;
 }
 
 .todoList {
@@ -53,9 +78,34 @@
   display: flex;
   align-items: center;
   margin: 8px 0;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s;
+}
+
+.todoItem:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .todoText {
   flex: 1;
-  margin-left: 8px;
+  margin-left: 12px;
+  font-size: 16px;
+}
+
+.deleteButton {
+  font: inherit;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 4px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
 }
