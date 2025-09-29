@@ -62,13 +62,17 @@ export async function Todos() {
         Clear Completed
       </button>
       <ul class={classes.todoList}>
-        {For(todos, (todo) => (
-          <TodoItem
-            item={todo}
-            onDelete={handleDelete}
-            onToggle={handleToggle}
-          />
-        ))}
+        {For(
+          todos,
+          (todo) => (
+            <TodoItem
+              item={todo}
+              onDelete={handleDelete}
+              onToggle={handleToggle}
+            />
+          ),
+          { key: 'id' }
+        )}
       </ul>
     </div>
   );
