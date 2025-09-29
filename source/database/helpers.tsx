@@ -1,15 +1,23 @@
 import {
-  EventDef,
-  Materializer,
-  State,
-  LiveStoreSchema,
+  type EventDef,
+  type Materializer,
+  type State,
+  type LiveStoreSchema,
   queryDb,
   type QueryBuilder,
   type Store,
-} from "@livestore/livestore";
-import { Cell, createScope, If, useScopeContext, useSetupEffect } from "retend";
-import { JSX } from "retend/jsx-runtime";
+} from '@livestore/livestore';
+import { Cell, createScope, If, useScopeContext, useSetupEffect } from 'retend';
+import type { JSX } from 'retend/jsx-runtime';
 
+const LiveStoreScope = createScope();
+
+/**
+ * Represents a domain model, encapsulating a database table, its events,
+ * and the logic (materializers) to update the table state based on those events.
+ * @template Table The database table's structure.
+ * @template EventMap A map of event types to their definitions.
+ */
 export class Model<Table, EventMap> {
   table: Table;
   events: EventMap;
@@ -26,25 +34,26 @@ export class Model<Table, EventMap> {
 }
 
 export type Doc<
-  T extends Model<Table, any>,
-  Table extends State.SQLite.TableDef = T["table"],
+  T extends Model<Table, EventMap>,
+  Table extends State.SQLite.TableDef = T['table'],
+  EventMap extends Record<string, EventDef.Any> = T['events']
 > = State.SQLite.FromTable.RowDecoded<Table>;
 
-export type Materializers<EventMap> =
-  EventMap extends Record<string, EventDef.Any>
-    ? {
-        [TEventName in EventMap[keyof EventMap]["name"] as Extract<
-          EventMap[keyof EventMap],
-          { name: TEventName }
-        >["options"]["derived"] extends true
-          ? never
-          : TEventName]: Materializer<
-          Extract<EventMap[keyof EventMap], { name: TEventName }>
-        >;
-      }
-    : never;
-
-const LiveStoreScope = createScope<Store<any>>();
+export type Materializers<EventMap> = EventMap extends Record<
+  string,
+  EventDef.Any
+>
+  ? {
+      [TEventName in EventMap[keyof EventMap]['name'] as Extract<
+        EventMap[keyof EventMap],
+        { name: TEventName }
+      >['options']['derived'] extends true
+        ? never
+        : TEventName]: Materializer<
+        Extract<EventMap[keyof EventMap], { name: TEventName }>
+      >;
+    }
+  : never;
 
 interface LiveStoreProviderProps<T extends LiveStoreSchema> {
   initStore: () => Promise<Store<T>>;
@@ -61,7 +70,7 @@ interface LiveStoreProviderProps<T extends LiveStoreSchema> {
  * it to its children.
  */
 export function LiveStoreProvider<T extends LiveStoreSchema>(
-  props: LiveStoreProviderProps<T>,
+  props: LiveStoreProviderProps<T>
 ) {
   const { initStore, children, fallback } = props;
   const resource = Cell.async(initStore);
@@ -90,13 +99,18 @@ export function LiveStoreProvider<T extends LiveStoreSchema>(
  * @template TResultSchema The expected schema of the query results before mapping.
  * @template TResult The expected schema of the query results after mapping (defaults to TResultSchema).
  */
-export function useLiveQuery<TResultSchema, TResult = TResultSchema>(
-  queryInput: QueryBuilder<TResultSchema, any, any>,
+export function useLiveQuery<
+  TResultSchema,
+  Table extends State.SQLite.TableDef,
+  TResult = TResultSchema
+>(
+  // biome-ignore lint/suspicious/noExplicitAny: Types are too complex
+  queryInput: QueryBuilder<TResultSchema, Table, any>,
   options?: {
     map?: (rows: TResultSchema) => TResult;
-  },
+  }
 ): Cell<TResult> {
-  const store = useScopeContext(LiveStoreScope);
+  const store = useScopeContext<Store>(LiveStoreScope);
   const cell = Cell.source<TResult | []>([]);
 
   useSetupEffect(() => {
@@ -115,5 +129,5 @@ export function useLiveQuery<TResultSchema, TResult = TResultSchema>(
  * A hook that provides access to the LiveStore instance from the nearest `LiveStoreScope.Provider`.
  */
 export function useStore() {
-  return useScopeContext(LiveStoreScope);
+  return useScopeContext<Store>(LiveStoreScope);
 }

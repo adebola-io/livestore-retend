@@ -1,7 +1,7 @@
-import { Todo, TodoModel } from "@/database/entities/todo";
-import { useLiveQuery, useStore } from "@/database/helpers";
-import { For } from "retend";
-import classes from "./start.styles.module.css";
+import { type Todo, TodoModel } from '@/database/entities/todo';
+import { useLiveQuery, useStore } from '@/database/helpers';
+import { For } from 'retend';
+import classes from './start.styles.module.css';
 
 export async function Todos() {
   const todos = useLiveQuery(TodoModel.table.where({ deletedAt: null }));
@@ -10,7 +10,7 @@ export async function Todos() {
   const handleSubmit = (event: Event) => {
     const target = event.target as HTMLFormElement;
     const data = new FormData(target);
-    const text = data.get("taskName") as string;
+    const text = data.get('taskName') as string;
     const dbEvent = TodoModel.events.created({ id: crypto.randomUUID(), text });
     store.commit(dbEvent);
     target.reset();
@@ -92,7 +92,7 @@ function TodoItem(props: TodoItemProps) {
       />
       <span
         class={classes.todoText}
-        style={item.completed ? { textDecoration: "line-through" } : {}}
+        style={item.completed ? { textDecoration: 'line-through' } : {}}
       >
         {item.text}
       </span>
