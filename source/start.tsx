@@ -1,11 +1,11 @@
 import { makePersistedAdapter } from "@livestore/adapter-web";
 import { createStorePromise } from "@livestore/livestore";
 import { schema } from "@/database/schema";
-import { LiveStoreProvider } from "@/database/store";
+import { LiveStoreProvider } from "@/database/helpers";
 import { Todos } from "./todos";
-import classes from "./start.styles.module.css";
 import LiveStoreSharedWorker from "@livestore/adapter-web/shared-worker?sharedworker";
 import LiveStoreWorker from "@/database/livestore.worker?worker";
+import classes from "./start.styles.module.css";
 
 const Start = () => {
   const initStore = () => {
